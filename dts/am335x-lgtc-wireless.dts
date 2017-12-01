@@ -5,3 +5,17 @@
 / {
 	model = "TI AM335x SNA-LGTC Wireless";
 };
+
+/* set MMC3 pins as GPIOs */
+&am33xx_pinmux {
+	mmc3_pins: pinmux_mmc3_pins {
+		pinctrl-single,pins = <
+			0x8c ( PIN_INPUT_PULLUP | MUX_MODE7 ) /* gpio2_1 gpmc_clk.mmc2_clk */
+			0x88 ( PIN_INPUT_PULLUP | MUX_MODE7 ) /* gpio2_0 gpmc_csn3.mmc2_cmd */
+			0x30 ( PIN_INPUT_PULLUP | MUX_MODE7 ) /* gpio1_12 gpmc_ad12.mmc2_dat0 */
+			0x34 ( PIN_INPUT_PULLUP | MUX_MODE7 ) /* gpio1_13 gpmc_ad13.mmc2_dat1 */
+			0x38 ( PIN_INPUT_PULLUP | MUX_MODE7 ) /* gpio1_14 gpmc_ad14.mmc2_dat2 */
+			0x3c ( PIN_INPUT_PULLUP | MUX_MODE7 ) /* gpio1_15 gpmc_ad15.mmc2_dat3 */
+		>;
+	};
+};
