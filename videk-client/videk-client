@@ -145,7 +145,7 @@ while True:
         node_model = videk.getNodeByHardwareId(machine_id)
         node_name = node_model['name']
         videk_ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', node_name.replace("-", "."))[0]
-        if current_ip != videk:
+        if current_ip != videk_ip:
             subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
             subprocess.call(["systemctl", "restart", "munin-node"])
             init(videk)
