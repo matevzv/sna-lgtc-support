@@ -6,5 +6,8 @@ setup(
     packages=['videkrestclient',],
     scripts=['videk-client'],
     data_files=[('/etc/videk', ['api.key'])],
-    install_requires=['requests']
+    install_requires=[
+    'requests',
+    'netifaces'
+    ]
 )
