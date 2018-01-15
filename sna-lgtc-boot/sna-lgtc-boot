@@ -44,21 +44,25 @@ if [ -f "$LGTC_FLASH_FILE" ] ; then
     rm "$LGTC_FLASH_FILE"
 fi
 
-# set IP address as hostname
-IP=`ip addr show wlan0 | grep -Po 'inet \K[\d.]+'`
+while true; do
+    # set IP address as hostname
+    IP=`ip addr show wlan0 | grep -Po 'inet \K[\d.]+'`
 
-echo "Our IP is $IP"
+    echo "Our IP is $IP"
 
-if [[ $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    HOSTNAME="sna-lgtc-"${IP//[.]/-}
+    if [[ $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        HOSTNAME="sna-lgtc-"${IP//[.]/-}
 
-    echo $HOSTNAME > /etc/hostname
+        echo $HOSTNAME > /etc/hostname
 
-    sed -i -e '/127\.\0\.1\.1/d' /etc/hosts
-    echo "127.0.1.1 $HOSTNAME ${HOSTNAME}.ijs.si" >> /etc/hosts
+        sed -i -e '/127\.\0\.1\.1/d' /etc/hosts
+        echo "127.0.1.1 $HOSTNAME ${HOSTNAME}.ijs.si" >> /etc/hosts
 
-    /bin/hostname "$HOSTNAME"
-else
-    echo "failed to set hostname"
-    exit 1
-fi
+        /bin/hostname "$HOSTNAME"
+        exit 0
+    else
+        echo "failed to set hostname"
+    fi
+
+    sleep 5
+done
