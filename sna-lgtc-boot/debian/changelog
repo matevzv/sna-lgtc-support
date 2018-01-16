@@ -1,3 +1,9 @@
+sna-lgtc-boot (1.1.0-1) unstable; urgency=medium
+
+  * Adds external config file
+
+ -- Matevz Vucnik <matevz.vucnik@ijs.si>  Tue, 16 Jan 2018 12:46:55 +0100
+
 sna-lgtc-boot (1.0.0-1) unstable; urgency=medium
 
   * Initial release.

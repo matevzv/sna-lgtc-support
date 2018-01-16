@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. /etc/videk/conf
+
 LGTC_FLASH_FILE="/etc/lgtc/lgtc-first-boot"
 
 if [ -f "$LGTC_FLASH_FILE" ] ; then
@@ -46,7 +48,7 @@ fi
 
 while true; do
     # set IP address as hostname
-    IP=`ip addr show wlan0 | grep -Po 'inet \K[\d.]+'`
+    IP=`ip addr show "$if" | grep -Po 'inet \K[\d.]+'`
 
     echo "Our IP is $IP"
 
