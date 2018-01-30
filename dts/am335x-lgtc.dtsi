@@ -108,7 +108,7 @@
 	bt_pins: pinmux_bt_pins {
 		pinctrl-single,pins = <
 			/* gpio3_18 BT_EN */
-			0x1a0 (PIN_OUTPUT | MUX_MODE7)
+			0x1a0 (PIN_INPUT_PULLUP | MUX_MODE7)
 		>;
 	};
 };
