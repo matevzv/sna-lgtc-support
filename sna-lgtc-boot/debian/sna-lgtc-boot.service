@@ -5,9 +5,9 @@ After=network-online.target
 Before=munin-node.service docker.service
 
 [Service]
-Type=oneshot
-RemainAfterExit=yes
 ExecStart=/bin/sna-lgtc-boot
+Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
