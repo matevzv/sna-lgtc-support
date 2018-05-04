@@ -12,6 +12,7 @@ from videkrestclient import Videk
 
 boot = True
 machine_id = None
+name_change = False
 videk_api_key = open('/etc/videk/api.key').readline().strip()
 videk = Videk("https://videk.ijs.si", videk_api_key)
 
@@ -151,6 +152,11 @@ while True:
     if boot:
         init(videk)
         boot = False
+    elif name_change:
+        subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
+        subprocess.call(["systemctl", "restart", "munin-node"])
+        init(videk)
+        name_change = False
     else:
         try:
             current_ip = ni.ifaddresses(conf['if'])[ni.AF_INET][0]['addr']
@@ -158,9 +164,8 @@ while True:
             node_name = node_model['name']
             videk_ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', node_name.replace("-", "."))[0]
             if current_ip != videk_ip:
-                subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
-                subprocess.call(["systemctl", "restart", "munin-node"])
-                init(videk)
+                videk.updateSingleNodeParam(node_model['id'], "name", machine_id)
+                name_change = True
         except:
             pass
     time.sleep(10*60)

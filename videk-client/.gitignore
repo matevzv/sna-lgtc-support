@@ -9,3 +9,4 @@ debian/videk-client
 VidekClient.egg-info
 .pybuild
 build
+*.pyc
