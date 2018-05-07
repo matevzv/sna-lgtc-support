@@ -153,8 +153,6 @@ while True:
         init(videk)
         boot = False
     elif name_change:
-        subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
-        subprocess.call(["systemctl", "restart", "munin-node"])
         init(videk)
         name_change = False
     else:
@@ -164,7 +162,9 @@ while True:
             node_name = node_model['name']
             videk_ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', node_name.replace("-", "."))[0]
             if current_ip != videk_ip:
-                videk.updateSingleNodeParam(node_model['id'], "name", machine_id)
+                videk.updateSingleNodeParam(node_model['id'], "name", "tmp-"+machine_id)
+                subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
+                subprocess.call(["systemctl", "restart", "munin-node"])
                 name_change = True
         except:
             pass
