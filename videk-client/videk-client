@@ -12,7 +12,6 @@ from videkrestclient import Videk
 
 boot = True
 machine_id = None
-name_change = False
 videk_api_key = open('/etc/videk/api.key').readline().strip()
 videk = Videk("https://videk.ijs.si", videk_api_key)
 
@@ -152,20 +151,27 @@ while True:
     if boot:
         init(videk)
         boot = False
-    elif name_change:
-        init(videk)
-        name_change = False
     else:
+        current_ip = None
         try:
             current_ip = ni.ifaddresses(conf['if'])[ni.AF_INET][0]['addr']
-            node_model = videk.getNodeByHardwareId(machine_id)
-            node_name = node_model['name']
-            videk_ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', node_name.replace("-", "."))[0]
-            if current_ip != videk_ip:
-                subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
-                subprocess.call(["systemctl", "restart", "munin-node"])
-                videk.updateSingleNodeParam(node_model['id'], "name", "tmp-"+machine_id)
-                name_change = True
         except:
             pass
+        if current_ip:
+            node_model = videk.getNodeByHardwareId(machine_id)
+            if node_model:
+                node_name = node_model['name']
+                videk_ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', node_name.replace("-", "."))
+                if videk_ip:
+                    videk_ip = videk_ip[0]
+                if current_ip != videk_ip:
+                    subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
+                    subprocess.call(["systemctl", "restart", "munin-node"])
+                    hostname = socket.gethostname()
+                    node_model_x = videk.getNode(hostname)
+                    if node_model_x:
+                        videk.updateSingleNodeParam(node_model_x['id'], "name", "tmp-"+node_model_x['machine_id'])
+                    init(videk)
+            else:
+                init(videk)
     time.sleep(10*60)
