@@ -173,5 +173,11 @@ while True:
                         videk.updateSingleNodeParam(node_model_x['id'], "name", "tmp-"+node_model_x['machine_id'])
                     init(videk)
             else:
+                subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
+                subprocess.call(["systemctl", "restart", "munin-node"])
+                hostname = socket.gethostname()
+                node_model_x = videk.getNode(hostname)
+                if node_model_x:
+                    videk.updateSingleNodeParam(node_model_x['id'], "name", "tmp-"+node_model_x['machine_id'])
                 init(videk)
     time.sleep(10*60)
