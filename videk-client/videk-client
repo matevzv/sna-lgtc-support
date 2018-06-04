@@ -73,6 +73,7 @@ def init(videk):
     node_model_x = videk.getNode(node)
     if node_model_x and node_model_x['machine_id'] != machine_id:
         videk.updateSingleNodeParam(node_model_x['id'], "name", "tmp-"+node_model_x['machine_id'])
+        videk.updateSingleNodeParam(node_model_x['id'], "status", "inactive")
 
     cluster_id = videk.getClusterID(cluster)
     if cluster_id == None:
