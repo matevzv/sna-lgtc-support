@@ -48,10 +48,9 @@ def uploadSensors(node_id, sensor_type, sensors):
 
         videk.uploadMesurements(preparedData, node_id, sensor_id)
 
-def init(videk):
+def init(videk, current_ip):
     global conf
     global machine_id
-    global current_ip
 
     node = socket.gethostname()
     cluster = node[:node.rfind("-")]
@@ -69,6 +68,7 @@ def init(videk):
         print "reseting sna-lgtc-boot and munin services ..."
         subprocess.call(["systemctl", "restart", "sna-lgtc-boot"])
         subprocess.call(["systemctl", "restart", "munin-node"])
+        node = socket.gethostname()
 
     node_model_x = videk.getNode(node)
     if node_model_x and node_model_x['machine_id'] != machine_id:
@@ -174,8 +174,8 @@ while True:
             if videk_ip:
                 videk_ip = videk_ip[0]
             if current_ip != videk_ip:
-                init(videk)
+                init(videk, current_ip)
         else:
-            init(videk)
+            init(videk, current_ip)
 
     time.sleep(10*60)
