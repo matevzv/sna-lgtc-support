@@ -131,5 +131,5 @@
 /* VESNA SNC is connected to UART2 on J9 */
 #include "am335x-bone-pinmux-ttyS2.dtsi"
 
-/* VESNA UWB is connected to UART4 on J11*/
+/* VESNA UWB is connected to UART4 on J11 */
 #include "am335x-bone-pinmux-ttyS4.dtsi"
