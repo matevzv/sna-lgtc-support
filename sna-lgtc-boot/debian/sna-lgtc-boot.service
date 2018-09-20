@@ -1,8 +1,5 @@
 [Unit]
 Description=SNA-LGTC init
-Requires=network-online.target
-After=network-online.target
-Before=munin-node.service docker.service
 
 [Service]
 Type=oneshot

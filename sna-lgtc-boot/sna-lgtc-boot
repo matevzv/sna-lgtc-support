@@ -2,8 +2,6 @@
 
 . /etc/videk/conf
 
-IFCONF=${if:=wlan0}
-
 LGTC_FLASH_FILE="/etc/lgtc/lgtc-first-boot"
 
 if [ -f "$LGTC_FLASH_FILE" ] ; then
@@ -47,26 +45,3 @@ if [ -f "$LGTC_FLASH_FILE" ] ; then
     # remove flash file
     rm "$LGTC_FLASH_FILE"
 fi
-
-while true; do
-    # set IP address as hostname
-    IP=`ip addr show "$IFCONF" | grep -Po 'inet \K[\d.]+'`
-
-    echo "Our IP is $IP"
-
-    if [[ $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        HOSTNAME="sna-lgtc-"${IP//[.]/-}
-
-        echo $HOSTNAME > /etc/hostname
-
-        sed -i -e '/127\.\0\.1\.1/d' /etc/hosts
-        echo "127.0.1.1 $HOSTNAME ${HOSTNAME}.ijs.si" >> /etc/hosts
-
-        /bin/hostname "$HOSTNAME"
-        exit 0
-    else
-        echo "failed to set hostname"
-    fi
-
-    sleep 5
-done
