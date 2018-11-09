@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-. /etc/videk/conf
-
 LGTC_FLASH_FILE="/etc/lgtc/lgtc-first-boot"
 
 if [ -f "$LGTC_FLASH_FILE" ] ; then
