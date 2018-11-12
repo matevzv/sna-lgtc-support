@@ -7,7 +7,7 @@ Standards-Version: 3.9.8
 
 Package: sna-lgtc-boot
 Architecture: all
-Depends: munin-node, systemd, ${misc:Depends}
+Depends: systemd, ${misc:Depends}
 Description: Boot scripts for SNA-LGTC board
  This package provides a systemd services for proper initialization and
  registration of SNA-LGTC boards in Videk management system.
