@@ -1,0 +1,10 @@
+[Unit]
+Description=Power management for LGTC
+
+[Service]
+ExecStart=/usr/bin/sna-lgtc-pm
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
