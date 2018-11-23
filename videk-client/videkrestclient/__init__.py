@@ -137,7 +137,7 @@ class Videk:
             r = requests.get(self.api_url + self.nodes_url + "?name=" + id, headers=self.headers)
             res = r.json()
             if len(res) == 15:
-                print "Error: Node with the machine ID " + id + " not found"
+                print "Error: Node with the name " + id + " not found"
             else:
                 node_id = res[0]['_id']
                 node = requests.get(self.api_url + self.nodes_url + "/" + str(node_id), headers=self.headers).json()

@@ -1,12 +1,12 @@
 [Unit]
 Description=Updates a node and sensors
-Requires=sna-lgtc-boot.service
 After=sna-lgtc-boot.service
 
 [Service]
-Type=oneshot
+Environment=PYTHONUNBUFFERED=true
 ExecStart=/usr/bin/videk-client
-RemainAfterExit=yes
+Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
