@@ -45,7 +45,7 @@ fi
 SHUTDOWN=false
 
 while true; do
-    # sheck the state of AC power status bit
+    # check the state of AC power status bit
     STATUS=`i2cget -f -y 0 0x24 0x0a`
     STATUS=`hex2bin "$STATUS"`
     echo STATUS register: "$STATUS"
