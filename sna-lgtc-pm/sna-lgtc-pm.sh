@@ -5,7 +5,7 @@ hex2bin () {
     BIN=$(echo "obase=2; ibase=16; $HEX" | bc )
     BINLEN=${#BIN}
 
-    if [ $BINLEN != 8 ]; then
+    if [ "$BINLEN" != 8 ]; then
         BIN=`printf "0%.0s" $(eval echo "{1..$((8 - $BINLEN))}")`"$BIN"
     fi
 
@@ -27,19 +27,34 @@ bin2hex () {
 # disable PMIC AC interapt if not disabled
 INT=`i2cget -f -y 0 0x24 0x02`
 INT=`hex2bin "$INT"`
-echo INTERUPT register: "$INT"
+echo INTERRUPT register: "$INT"
 
 # get the third bit from the left 00100000
-echo AC interupt: "${INT:2:1}"
+echo AC interrupt: "${INT:2:1}"
 ACINT="${INT:2:1}"
-if [ $ACINT == 0 ]; then
+if [ "$ACINT" -eq 0 ]; then
     # shift the third bit from the left 00100000
-    # AC interupt turn off
+    # AC interrupt turn off
     MASK="00100000"
     # convert to hex and set i2c register
     MASK=`bin2hex $MASK`
     echo hex mask: "$MASK"
     i2cset -f -y -m "$MASK" 0 0x24 0x02 "$MASK"
+
+    # check if it worked
+    INT=`i2cget -f -y 0 0x24 0x02`
+    INT=`hex2bin "$INT"`
+    echo INTERRUPT register: "$INT"
+
+    # get the third bit from the left 00100000
+    echo AC interrupt: "${INT:2:1}"
+    ACINT="${INT:2:1}"
+    if [ "$ACINT" -eq 1 ]; then
+        echo AC interrupt switched off sucessfully
+    else
+        echo ERROR: Failed to switch off AC interrupt
+        exit 1
+    fi
 fi
 
 SHUTDOWN=false
@@ -56,7 +71,7 @@ while true; do
 
     if [ "$AC" -eq 0 ]; then
         # AC power was lost wait a while if it comes back
-        echo "Entering shutdown sequence!"
+        echo Entering shutdown sequence
         if [ "$SHUTDOWN" = true ]; then
             poweroff
         else
@@ -64,7 +79,7 @@ while true; do
             sleep 600
         fi
     else
-        echo "AC power OK!"
+        echo AC power OK
         SHUTDOWN=false
     fi
 
