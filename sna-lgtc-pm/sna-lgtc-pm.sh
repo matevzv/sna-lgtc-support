@@ -36,6 +36,7 @@ if [ "$ACINT" -eq 0 ]; then
     # shift the third bit from the left 00100000
     # AC interrupt turn off
     MASK="00100000"
+    
     # convert to hex and set i2c register
     MASK=`bin2hex $MASK`
     echo hex mask: "$MASK"
